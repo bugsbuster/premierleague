@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        #chartdiv {
+            width		: 70%;
+            height		: 350px;
+            font-size	: 11px;
+        }
+    </style>
+    <title>Top 5 Premier League Scorers</title>
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-ld-12"><h2>Premier League Top Scorers</h2><hr></div>
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="btn-group" data-toggle="buttons">
+                        <label class="btn btn-info active">
+                            <input type="radio" name="options" id="option1" value="all" autocomplete="off" > All
+                        </label>
+                        <label class="btn btn-info">
+                            <input type="radio" name="options" id="option2" value="home" autocomplete="off"> Home
+                        </label>
+                        <label class="btn btn-info">
+                            <input type="radio" name="options" id="option3" value="away" autocomplete="off"> Away
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <input id="_from" type="text" placeholder="From match day">
+                </div>
+                <div class="col-md-2">
+                    <input id="_to" type="text" placeholder="To match day">
+                </div>
+                <div class="col-md-2">
+                    <input id="_team" type="text" placeholder="Team name">
+                </div>
+                <div class="col-md-3"></div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <button type="submit" class="btn btn-success" style="margin-top:30px;" onClick="doIt()">Show</button>
+                </div>
+                <div class="col-md-9">
+                    <div id="chartdiv"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+<script src="https://www.amcharts.com/lib/3/pie.js"></script>
+<script src="https://www.amcharts.com/lib/3/themes/none.js"></script>
+<script>
+    function doIt() {
+        $('#chartdiv').html('<p id=_msg" class="bg-info">Querying the mashape API, please wait.......</p>');
+        var filters={};
+        if ($('#_from').val()){
+            filters.from=$('#_from').val();
+        }
+        if ($('#_to').val()){
+            filters.to=$('#_to').val();
+        }
+        if ($('#_team').val()){
+            filters.team=$('#_team').val();
+        }
+        filters.mode=$('.btn-group > .btn.active > input').val();
+        var output = $.ajax({
+            url: 'https://heisenbug-premier-league-live-scores-v1.p.mashape.com/api/premierleague/table/scorers',
+            type: 'GET',
+            data: filters, // Additional parameters here
+            dataType: 'json',
+            success: function(data) {
+                $('#_msg').remove();
+                var chart = AmCharts.makeChart( "chartdiv", {
+                    "type": "pie",
+                    "theme": "light",
+                    "labelText":"[[title]]:[[value]]",
+                    "dataProvider": [ {
+                        "player": data.scorers[0].playerName,
+                        "goals": data.scorers[0].goals
+                    }, {
+                        "player": data.scorers[1].playerName,
+                        "goals": data.scorers[1].goals
+                    }, {
+                        "player": data.scorers[2].playerName,
+                        "goals": data.scorers[1].goals
+                    }, {
+                        "player": data.scorers[3].playerName,
+                        "goals": data.scorers[3].goals
+                    }, {
+                        "player": data.scorers[4].playerName,
+                        "goals": data.scorers[4].goals
+                    } ],
+                    "valueField": "goals",
+                    "titleField": "player",
+                    "balloon":{
+                        "fixedPosition":true
+                    },
+                    "export": {
+                        "enabled": true
+                    }
+                } );
+
+            },
+            error: function(err) { $('#_msg').remove();$('#chartdiv').html('<p id=_msg" class="bg-danger">Something wrong happened, contact the support team!</p>'); },
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader("X-Mashape-Authorization", "YOUR_MASHAPE_KEY"); // Enter here your Mashape key
+            }
+        });
+    }
+</script>
+</body>
+
+
+</html>
