@@ -117,7 +117,7 @@
             },
             error: function(err) {
                 $('#_msg').remove();
-                $('#chartdiv').html('<p id=_msg" class="bg-danger">Something wrong happened, contact the support team!<br>Error detail:'+err.responseJSON.message+'</p>'); 
+                $('#chartdiv').html('<p id=_msg" class="bg-danger">Something wrong happened, contact the <a href="https://market.mashape.com/heisenbug/premier-league-live-scores/support">support team</a>!<br>Error detail:'+err.responseJSON.message+'</p>');
             },
             beforeSend: function(xhr) {
                 xhr.setRequestHeader("X-Mashape-Authorization", "YOUR_MASHAPE_KEY"); // Enter here your Mashape key
