@@ -10,4 +10,4 @@ On some browser, opening directly the html could could cause the CORS problem ma
 Solutions could be
 -using a different browser
 -serve the html file from an http server
--disabling the brwoser access control (on Chrome start the browser with "--allow-file-access-from-files" option)
+-disabling the browser access control feature (on Chrome start the browser with "--allow-file-access-from-files" option)
