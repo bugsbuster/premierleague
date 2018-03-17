@@ -9,5 +9,5 @@ Note.
 On some browsers, opening directly the html could could cause the CORS problem making the page not working properly.
 Solutions could be
 -using a different browser
--serve the html file from an http server
+-serving the html file from an http server
 -disabling the browser access control feature (on Chrome start the browser with "--allow-file-access-from-files" option)
