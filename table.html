@@ -1,0 +1,58 @@
+<html>
+        <script   src="https://code.jquery.com/jquery-3.3.1.min.js"   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="   crossorigin="anonymous"></script>
+        <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.css" />
+        <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid-theme.min.css" />   
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.js"></script>
+            
+    <body>
+            <div id="jsGrid"></div>
+    </body>
+    <script>
+        $().ready(    
+         function() {
+            console.log('start');
+            $("#jsGrid").jsGrid({
+                width: "40%",
+                height: "61%",
+         
+                inserting: false,
+                editing: false,
+                sorting: true,
+                paging: true,
+                autoload: true,
+
+                controller: {
+                    loadData: function() {
+                        var d = $.Deferred();
+        
+                        $.ajax({
+                            url: 'https://heisenbug-premier-league-live-scores-v1.p.mashape.com/api/premierleague/table',
+                            type: 'GET',
+                            data: {}, // Additional parameters here
+                            dataType: 'json',
+                            beforeSend: function(xhr) {
+                                xhr.setRequestHeader("X-Mashape-Authorization", "YOUR_MASHAPE_KEY"); // Enter here your Mashape key
+                            }
+                        }).done(function(response) {
+                            console.log(response.records);
+                            d.resolve(response.records);
+                        });
+        
+                        return d.promise();
+                    }
+                },
+         
+                fields: [
+                    { name: "team", type: "text", width: "30%" , title:"Team"},
+                    { name: "played", type: "number", width: "10%", title:"Played" },
+                    { name: "win", type: "number", width: "10%" },
+                    { name: "draw", type: "number", width: "10%" },
+                    { name: "loss", type: "number", width: "10%" },
+                    { name: "goalsFor", type: "number", width: "10%" },
+                    { name: "goalsAgainst", type: "number", width: "10%" },
+                    { name: "points", type: "number", width: "10%" }
+                ]
+            });
+        });
+        </script>
+</html>
