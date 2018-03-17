@@ -34,7 +34,6 @@
                                 xhr.setRequestHeader("X-Mashape-Authorization", "YOUR_MASHAPE_KEY"); // Enter here your Mashape key
                             }
                         }).done(function(response) {
-                            console.log(response.records);
                             d.resolve(response.records);
                         });
         
